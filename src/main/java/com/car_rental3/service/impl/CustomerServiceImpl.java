@@ -1,5 +1,6 @@
 package com.car_rental3.service.impl;
 
+import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,17 +40,33 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	@Override
 	public boolean userAuthenicate(String username, String password) {
-		List<Object> existUsernameAndPassword = customerRepo.findByUsernameAndPassword(username, password);
-		Iterator<Object> iterator = existUsernameAndPassword.iterator();
-		if(iterator.hasNext()) {
-			return true;
+		
+		BigInteger userExists = customerRepo.isUser(username, password);
+		
+		int intValue = userExists.intValue(); //intValue() this method is used to type caste from BigInteger
+		//to Integer value after that we can compare with compare value
+		System.out.println(intValue);
+		
+		if (intValue==1) {
 			
+			return true;
 		}
-		return false;
+		else {
+			return false;
+		}
 		
-		
+//		List<Object> existUsernameAndPassword = customerRepo.findByUsernameAndPassword(username, password);
+//		Iterator<Object> iterator = existUsernameAndPassword.iterator();
+//		if(iterator.hasNext()) {
+//			return true;
+//			
+//		}
+//		return false;
+
+}
 	
-	}
+	
+	
 	@Override
 	public CustomerDto getUser(String username) {
 		Customer findByUsername = customerRepo.findByUsername(username);
